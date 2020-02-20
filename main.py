@@ -5,16 +5,18 @@ import sys
 
 def algo(books, days, librairies):
     parsed = []
-    i = 0
+    i = -1
     libs_out = []
     for library in librairies:
+        i += 1
         books_to_parse = list(set(library[1]).difference(set(parsed)))
         days -= library[0][1]
         if len(books_to_parse) > days:
             books_to_parse = books_to_parse[days * library[0][0]:]
+        if len(books_to_parse) == 0:
+            continue
         libs_out.append(('{} {}'.format(i, len(books_to_parse)), ' '.join([str(book) for book in books_to_parse])))
         parsed += books_to_parse
-        i += 1
     print(len(libs_out))
     for item in libs_out:
         print(item[0])
