@@ -6,12 +6,19 @@ import sys
 def algo(books, days, librairies):
     parsed = []
     i = 0
+    libs_out = []
     for library in librairies:
-        books = set(library['books']).difference(set(parsed))
-        print('{} {}'.format(i, len(books)))
-        print(' '.join(books))
-        parsed += books
+        books_to_parse = list(set(library[1]).difference(set(parsed)))
+        days -= library[0][1]
+        if len(books_to_parse) > days:
+            books_to_parse = books_to_parse[days * library[0][0]:]
+        libs_out.append(('{} {}'.format(i, len(books_to_parse)), ' '.join([str(book) for book in books_to_parse])))
+        parsed += books_to_parse
         i += 1
+    print(len(libs_out))
+    for item in libs_out:
+        print(item[0])
+        print(item[1])
 
 
 def parse_file(lines):
