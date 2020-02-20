@@ -3,6 +3,10 @@
 import sys
 
 
+def algo(books, days, librairies):
+    pass
+
+
 def parse_file(lines):
     books_nbr, libraries_nbr, days = map(int, next(lines).split())
     books = map(int, next(lines).split())
@@ -19,7 +23,8 @@ def main(argv):
         return 1
     with open(argv[1]) as file:
         input_data = file.readlines()
-
+        books, _, days, libraries = parse_file(input_data)
+        algo(books, days, libraries)
     return 0
 
 
