@@ -4,7 +4,14 @@ import sys
 
 
 def algo(books, days, librairies):
-    pass
+    parsed = []
+    i = 0
+    for library in librairies:
+        books = set(library['books']).difference(set(parsed))
+        print('{} {}'.format(i, len(books)))
+        print(' '.join(books))
+        parsed += books
+        i += 1
 
 
 def parse_file(lines):
@@ -23,7 +30,7 @@ def main(argv):
         return 1
     with open(argv[1]) as file:
         input_data = file.readlines()
-        books, _, days, libraries = parse_file(input_data)
+        books, _, _, days, libraries = parse_file(input_data)
         algo(books, days, libraries)
     return 0
 
