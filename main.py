@@ -28,6 +28,7 @@ def algo_books(libraries):
             books[book].append(library[0])
     return
 
+
 def score(books, library):
     s = 0
     for book in library[1][1]:
@@ -43,16 +44,17 @@ def algo(books, days, libraries):
     libraries = sorted(libraries, key=lambda x: score(books, x) / x[1][0][1], reverse=True)
     for library in libraries:
         library[1][1] = list(set(library[1][1]).difference(set(known)))
+        # library[1][1] = sorted(library[1][1], key=lambda x: books[x])
         known += library[1][1]
         library[1][0][0] = len(library[1][1])
     libraries = sorted(libraries, key=lambda x: score(books, x) / x[1][0][1], reverse=True)
     for library in libraries:
         if library[1][0][0] == 0:
             continue
-        books_to_parse = list(set(library[1][1]).difference(set(parsed)))
+        books_to_parse = sorted(list(set(library[1][1]).difference(set(parsed))), key=lambda x: books[x])
         dayst = days - library[1][0][1]
-        if len(books_to_parse) / library[1][0][0] > dayst:
-            offset = max(0, len(books_to_parse) - dayst * library[1][0][0])
+        if len(books_to_parse) / library[1][0][2] > dayst:
+            offset = max(0, len(books_to_parse) - dayst * library[1][0][2])
             books_to_parse = books_to_parse[offset:]
         if len(books_to_parse) == 0:
             continue
