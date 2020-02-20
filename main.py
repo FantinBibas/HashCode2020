@@ -28,6 +28,8 @@ def parse_file(lines):
     lines = lines[2:]
     l = len(lines)
     for i in range(0, l, 2):
+        if lines[i].strip() == "":
+            continue
         library_param = list(map(int, lines[i].split()))
         library_books = list(map(int, lines[i + 1].split()))
         libraries.append((library_param, library_books))
