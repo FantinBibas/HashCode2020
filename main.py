@@ -11,7 +11,7 @@ def parse_file(lines):
         library_param = map(int, line.split())
         library_books = map(int, next(lines).split())
         libraries.append({"param": library_param, "books": library_books})
-    return books_nbr, libraries_nbr, days, libraries
+    return books_nbr, books, libraries_nbr, days, libraries
 
 
 def main(argv):
@@ -19,7 +19,7 @@ def main(argv):
         return 1
     with open(argv[1]) as file:
         input_data = file.readlines()
-        # TODO
+
     return 0
 
 
