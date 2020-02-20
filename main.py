@@ -36,12 +36,23 @@ def score(books, library):
     return s * library[1][0][2]
 
 
+def score2(books, days, library):
+    libbooks = sorted(library[1][1], key=lambda x: books[x])
+    if len(libbooks) / library[1][0][2] > days:
+        offset = max(0, len(libbooks) - days * library[1][0][2])
+        libbooks = libbooks[offset:]
+    s = 0
+    for book in libbooks:
+        s += books[book]
+    return s * library[1][0][2]
+
+
 def algo(books, days, libraries):
     parsed = []
     libs_out = []
     known = []
     libraries = [list(enum) for enum in enumerate(libraries)]
-    libraries = sorted(libraries, key=lambda x: score(books, x) / x[1][0][1], reverse=True)
+    libraries = sorted(libraries, key=lambda x: score2(books, days, x) / x[1][0][1], reverse=True)
     for library in libraries:
         library[1][1] = list(set(library[1][1]).difference(set(known)))
         # library[1][1] = sorted(library[1][1], key=lambda x: books[x])
