@@ -33,7 +33,7 @@ def score(books, library):
     s = 0
     for book in library[1][1]:
         s += books[book]
-    return s
+    return s * library[1][0][2]
 
 
 def algo(books, days, libraries):
