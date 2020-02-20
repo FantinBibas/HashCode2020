@@ -13,17 +13,42 @@ def parse_file(lines):
         if lines[i].strip() == "":
             continue
         library_param = list(map(int, lines[i].split()))
-        library_books = list(map(int, lines[i + 1].split()))
-        libraries.append((library_param, library_books))
+        library_books = list(set(list(map(int, lines[i + 1].split()))))
+        library_param[0] = len(library_books)
+        libraries.append([library_param, library_books])
     return books_nbr, books, libraries_nbr, days, libraries
 
 
-def algo(books, days, librairies):
+def algo_books(libraries):
+    books = {}
+    for library in libraries:
+        for book in library[1][1]:
+            if book not in books.keys():
+                books[book] = []
+            books[book].append(library[0])
+    return
+
+def score(books, library):
+    s = 0
+    for book in library[1][1]:
+        s += books[book]
+    return s
+
+
+def algo(books, days, libraries):
     parsed = []
     libs_out = []
-    librairies = enumerate(librairies)
-    librairies = sorted(librairies, key=lambda x: x[1][0][0] / x[1][0][1], reverse=True)
-    for library in librairies:
+    known = []
+    libraries = [list(enum) for enum in enumerate(libraries)]
+    libraries = sorted(libraries, key=lambda x: score(books, x) / x[1][0][1], reverse=True)
+    for library in libraries:
+        library[1][1] = list(set(library[1][1]).difference(set(known)))
+        known += library[1][1]
+        library[1][0][0] = len(library[1][1])
+    libraries = sorted(libraries, key=lambda x: score(books, x) / x[1][0][1], reverse=True)
+    for library in libraries:
+        if library[1][0][0] == 0:
+            continue
         books_to_parse = list(set(library[1][1]).difference(set(parsed)))
         dayst = days - library[1][0][1]
         if len(books_to_parse) / library[1][0][0] > dayst:
@@ -45,7 +70,7 @@ def main(argv):
         return 1
     with open(argv[1]) as file:
         input_data = file.readlines()
-        books, _, _, days, libraries = parse_file(input_data)
+        _, books, _, days, libraries = parse_file(input_data)
         algo(books, days, libraries)
     return 0
 
