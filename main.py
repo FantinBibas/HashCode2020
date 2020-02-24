@@ -37,6 +37,7 @@ def score(books, library):
 
 
 def score2(books, days, library):
+    days -= library[1][0][1]
     libbooks = sorted(library[1][1], key=lambda x: books[x])
     if len(libbooks) / library[1][0][2] > days:
         offset = max(0, len(libbooks) - days * library[1][0][2])
@@ -44,22 +45,27 @@ def score2(books, days, library):
     s = 0
     for book in libbooks:
         s += books[book]
-    return s * library[1][0][2]
+    return s
 
 
 def algo(books, days, libraries):
     parsed = []
     libs_out = []
-    known = []
+    # known = []
     libraries = [list(enum) for enum in enumerate(libraries)]
-    libraries = sorted(libraries, key=lambda x: score2(books, days, x) / x[1][0][1], reverse=True)
-    for library in libraries:
-        library[1][1] = list(set(library[1][1]).difference(set(known)))
-        # library[1][1] = sorted(library[1][1], key=lambda x: books[x])
-        known += library[1][1]
-        library[1][0][0] = len(library[1][1])
-    libraries = sorted(libraries, key=lambda x: score(books, x) / x[1][0][1], reverse=True)
-    for library in libraries:
+    # libraries = sorted(libraries, key=lambda x: score2(books, days, x) / x[1][0][1], reverse=True)
+    # tmp = libraries[::]
+    # while len(tmp) > 0:
+    #     library = max(tmp, key=lambda x: score2(books, days, x) / x[1][0][1])
+    #     tmp.remove(library)
+    #     library[1][1] = list(set(library[1][1]).difference(set(known)))
+    #     # library[1][1] = sorted(library[1][1], key=lambda x: books[x])
+    #     known += library[1][1]
+    #     library[1][0][0] = len(library[1][1])
+    # libraries = sorted(libraries, key=lambda x: score2(books, days, x) / x[1][0][1], reverse=True)
+    while len(libraries) > 0:
+        library = max(libraries, key=lambda x: score2(books, days, x) / x[1][0][1])
+        libraries.remove(library)
         if library[1][0][0] == 0:
             continue
         books_to_parse = sorted(list(set(library[1][1]).difference(set(parsed))), key=lambda x: books[x])
